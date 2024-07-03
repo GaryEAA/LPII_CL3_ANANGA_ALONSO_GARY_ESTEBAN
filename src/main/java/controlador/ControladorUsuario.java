@@ -36,16 +36,16 @@ public class ControladorUsuario extends HttpServlet {
         String accion = request.getParameter("accion");
 
         if (accion != null && accion.equals("Salir")) {
-            // Manejar la acción de salir (cerrar sesión)
-            HttpSession session = request.getSession(false); // false no crea una nueva sesión si no existe
+            // Manejar la acciÃ³n de salir (cerrar sesiÃ³n)
+            HttpSession session = request.getSession(false); // false no crea una nueva sesiÃ³n si no existe
             if (session != null) {
-                session.invalidate(); // Invalida la sesión existente
+                session.invalidate(); // Invalida la sesiÃ³n existente
             }
-            // Redirigir al usuario a la página de inicio de sesión u otra página
+            // Redirigir al usuario a la pÃ¡gina de inicio de sesiÃ³n u otra pÃ¡gina
             response.sendRedirect(request.getContextPath() + "/login.jsp");
         } else {
             // Manejo predeterminado para otras acciones, si es necesario
-            response.getWriter().append("Served at: ").append(request.getContextPath());
+            request.getRequestDispatcher("login.jsp").forward(request, response);
         }
 	}
 
@@ -63,21 +63,21 @@ public class ControladorUsuario extends HttpServlet {
 	    TblUsuariocl3 usuarioEncontrado = usuarioDAO.BuscarUsuario(usuario);
 
 	    if (usuarioEncontrado != null) {
-	        // Verificar la contraseña
+	        // Verificar la contraseÃ±a
 	        if (usuarioEncontrado.getPasswordcl3().equals(password)) {
 	            // Login exitoso
 	            HttpSession session = request.getSession();
 	            session.setAttribute("usuario", usuarioEncontrado);
 	            response.sendRedirect(request.getContextPath() + "/index.jsp");
 	        } else {
-	            // Contraseña incorrecta
-	            String mensajeError = "Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.";
+	            // ContraseÃ±a incorrecta
+	            String mensajeError = "Usuario o contraseÃ±a incorrectos. Por favor, intÃ©ntelo de nuevo.";
 	            request.setAttribute("mensaje", mensajeError);
 	            request.getRequestDispatcher("login.jsp").forward(request, response);
 	        }
 	    } else {
 	        // Usuario no encontrado
-	        String mensajeError = "Usuario o contraseña incorrectos. Por favor, inténtelo de nuevo.";
+	        String mensajeError = "Usuario o contraseÃ±a incorrectos. Por favor, intÃ©ntelo de nuevo.";
 	        request.setAttribute("mensaje", mensajeError);
 	        request.getRequestDispatcher("login.jsp").forward(request, response);
 	    }
